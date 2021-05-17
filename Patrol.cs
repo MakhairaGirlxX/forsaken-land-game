@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -18,7 +18,7 @@ public class Patrol : MonoBehaviour {
 	private NavMeshAgent agent;
 	private bool isFollowing = false;
 	private int i = 0;
-	private float timer = 5;
+	private float timer = 10;
 	private bool timerRunning = false;
 
 	void Start () {
@@ -30,7 +30,6 @@ public class Patrol : MonoBehaviour {
 	void NextPoint()
 	{
 		if (!isFollowing) {
-			Debug.Log ("is not following");
 			if (points.Length == 0) {
 				return;
 			} 
@@ -44,12 +43,13 @@ public class Patrol : MonoBehaviour {
 		}
 
 	}
-	//janitor waits for seconds at point, only counts to 3 (may need to add a loop for mopping action)
+
 	IEnumerator WaitOnPoint()
 	{
 		yield return new WaitForSeconds (5);
 		rb.velocity = Vector3.zero;
 		rb.angularVelocity = Vector3.zero;
+
 		if (i <= 2) {
 			i++;
 			NextPoint ();
@@ -59,9 +59,11 @@ public class Patrol : MonoBehaviour {
 			NextPoint ();
 		}
 	}
+
 	// Update is called once per frame
 	void Update () {
-		//new enemy functions should be added here
+
+		//add more enemy functions here
 		switch(select)
 		{
 		case (EnemyMoves.Follow):
@@ -71,30 +73,24 @@ public class Patrol : MonoBehaviour {
 
 		RaycastHit hit;
 		Vector3 ray = transform.TransformDirection (Vector3.forward);
-		if (Physics.Raycast (transform.position, ray, out hit, 10)) {
-			if (hit.collider.gameObject.tag == "Player") {
-				//Debug.Log ("Hit Player");
+		if (Physics.Raycast (transform.position, ray, out hit, 5f) && (hit.collider.gameObject.tag == "Player")) {
+				Debug.Log ("Hit Player");
 				Debug.DrawRay (transform.position, pos.position, Color.green, 4, false);
 				select = EnemyMoves.Follow;
-			} else {
-				//hit something that isn't player
-				ResetPath();
-			}
-			//hit nothing
-	}
-}
-	//you were working on calling patrol if player cannot be seen for 5 seconds by the enemy
-	private void ResetPath()
-	{
-		timerRunning = true;
-		if (timerRunning) {
+				timer = 10;
+			} 
+			//hit nothing or something that is not player
+		if (isFollowing == true) {
 			if (timer > 0) {
-				//timer -= Time.deltaTime;
+				timer -= Time.deltaTime;
 				Debug.Log (timer);
 			} else {
 				timer = 0;
 				timerRunning = false;
-				i = 0;
+				isFollowing = false;
+
+				select = EnemyMoves.Default;
+				i = 2;
 				NextPoint ();
 			}
 		}
@@ -105,8 +101,6 @@ public class Patrol : MonoBehaviour {
 		isFollowing = true;
 		agent.destination = playerPos.position;
 		agent.speed = 2f;
-		Debug.Log ("isFollowing");
-
 	}
 }
 
