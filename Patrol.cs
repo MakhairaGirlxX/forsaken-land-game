@@ -61,7 +61,7 @@ public class Patrol : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
-
+		//new enemy functions should be added here
 		switch(select)
 		{
 		case (EnemyMoves.Follow):
