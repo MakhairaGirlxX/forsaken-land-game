@@ -2,21 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OtherSide : MonoBehaviour
+public class DeskTrigger : MonoBehaviour
 {
-    public bool otherSide = false;
+    /*
+     * Tells the enemy if the player is under the desk or not. If they are, they will eventually be found
+     * Set up the same as Hidden.cs
+     */
+    public bool underDesk = false;
     bool inRange = false;
 
     void Update()
     {
         if (inRange)
         {
-            otherSide = true;
+            underDesk = true;
         }
         else
         {
-            otherSide = false;
-            //  Debug.Log("Not hidden");
+            underDesk = false;
+        }
+    }
+    void OnTriggerStay(Collider col)
+    {
+        if (col.gameObject.tag == "Player")
+        {
+            inRange = true;
         }
     }
     void OnTriggerEnter(Collider col)
@@ -24,7 +34,6 @@ public class OtherSide : MonoBehaviour
         if (col.gameObject.tag == "Player")
         {
             inRange = true;
-            Debug.Log("other side");
         }
     }
 

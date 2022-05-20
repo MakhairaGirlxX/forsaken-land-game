@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/*
+ * Sets the flashlight on and off depending on if the flashlight button is used
+ */
 public class Flashlight : MonoBehaviour
 {
     public GameObject light;
@@ -16,13 +18,14 @@ public class Flashlight : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //if flashlight key is pressed
         if (Input.GetKeyDown(flashlightToggle))
         {
             FlashLightInput();
            
         }
     }
-
+    //turns on and off flashlight depending on how many times the interact key was pressed
     private void FlashLightInput()
     {
         keyPressed++;

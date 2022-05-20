@@ -2,21 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OtherSide : MonoBehaviour
+public class JanitorRoomTrigger : MonoBehaviour
 {
-    public bool otherSide = false;
+    /*
+     * Tells the enemy if the player is in the Janitor's office
+     * */
+    public bool inJanitorRoom = false;
     bool inRange = false;
 
     void Update()
     {
         if (inRange)
         {
-            otherSide = true;
+            inJanitorRoom = true;
         }
         else
         {
-            otherSide = false;
-            //  Debug.Log("Not hidden");
+            inJanitorRoom = false;
         }
     }
     void OnTriggerEnter(Collider col)
@@ -24,7 +26,6 @@ public class OtherSide : MonoBehaviour
         if (col.gameObject.tag == "Player")
         {
             inRange = true;
-            Debug.Log("other side");
         }
     }
 

@@ -17,8 +17,7 @@ public class PlayerLook : MonoBehaviour
 		xAxisClamp = 0.0f;
 	}
 
-
-
+	//locks cursor to the movement of where the player looks
 	private void LockCursor()
 	{
 		Cursor.lockState = CursorLockMode.Locked;
@@ -26,6 +25,7 @@ public class PlayerLook : MonoBehaviour
 
 	private void Update()
 	{
+		//continuouly update where the player is looking
 		CameraRotation ();
 	}
 
@@ -35,7 +35,7 @@ public class PlayerLook : MonoBehaviour
 		float mouseY = Input.GetAxis (mouseYInputName) * mouseSensitivity * Time.deltaTime;
 
 		xAxisClamp += mouseY;
-
+		//boundaries where the player can look (what degrees)
 		if (xAxisClamp > 90.0f) 
 		{
 			xAxisClamp = 90.0f;
@@ -49,11 +49,11 @@ public class PlayerLook : MonoBehaviour
 			ClampXAxisRotationToValue (90.0f);
 		}
 
-
+		//rotates camera and player based on values
 		transform.Rotate (Vector3.left * mouseY);
 		playerBody.Rotate (Vector3.up * mouseX);
 	}
-
+	//look boundary specifications
 	private void ClampXAxisRotationToValue (float value)
 	{
 		Vector3 eulerRotation = transform.eulerAngles;
